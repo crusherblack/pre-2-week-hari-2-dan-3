@@ -162,3 +162,50 @@
 // };
 
 // promiseAll();
+
+class NetworkError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "NetworkError";
+  }
+}
+
+(async () => {
+  // TODO: 1
+
+  const fetchingUserFromInternet = (isOffline) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (isOffline) {
+          reject(new NetworkError("Gagal mendapatkan data dari internet"));
+        } else {
+          resolve({ name: "John", age: 18 });
+        }
+      }, 500);
+    });
+  };
+  // TODO: 2
+
+  try {
+    const user = await fetchingUserFromInternet(false);
+    console.log(user);
+  } catch (error) {
+    return error.message;
+  }
+
+  const helloWorld = (number) => {
+    return new Promise((resolve) => resolve("hello world" + number));
+  };
+
+  const numbers = [1, 2, 3, 4];
+
+  const kumpulanNumbers = numbers.map(async (number) => {
+    return await helloWorld(number);
+  });
+
+  const tampung = await Promise.all(kumpulanNumbers);
+
+  console.log(tampung);
+})();
+
+(() => console.log("hello World"))();
